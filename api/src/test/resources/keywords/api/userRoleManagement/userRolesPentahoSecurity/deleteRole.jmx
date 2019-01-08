@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
+  <hashTree>
+    <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
+    <hashTree>
+      <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Delete Role" enabled="true">
+        <stringProp name="TestPlan.comments">
+            Given variables (setUpData, role)
+            When setUpData contains &quot;role&quot;
+            And role is not null
+            And role is not default [&quot;Administrator&quot;,&quot;Power User&quot;,&quot;Report Author&quot;,&quot;Business Analyst&quot;,&quot;NoPermissions&quot;]
+            Then Delete role
+          </stringProp>
+        <stringProp name="IfController.condition">${__groovy(
+          vars.get(&quot;setUpData&quot;) &amp;&amp; vars.get(&quot;role&quot;) != null &amp;&amp;
+          vars.get(&quot;setUpData&quot;).toLowerCase().split(&quot;\,&quot;)*.trim().contains(&quot;role&quot;) &amp;&amp;
+          ! [&quot;administrator&quot;\,&quot;power user&quot;\,&quot;report author&quot;\,&quot;business analyst&quot;\,&quot;anonymous&quot;].contains(vars.get(&quot;role&quot;).trim().toLowerCase())
+          )}</stringProp>
+        <boolProp name="IfController.evaluateAll">false</boolProp>
+        <boolProp name="IfController.useExpression">true</boolProp>
+      </IfController>
+      <hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Delete Role" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <CriticalSectionController guiclass="CriticalSectionControllerGui" testclass="CriticalSectionController" testname="Delete Roles" enabled="true">
+            <stringProp name="CriticalSectionController.lockName">createDeleteRole_lock</stringProp>
+          </CriticalSectionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT deleteRoles" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/pentaho/api/userroledao/deleteRoles?roleNames=${role}</stringProp>
+              <stringProp name="HTTPSampler.method">PUT</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

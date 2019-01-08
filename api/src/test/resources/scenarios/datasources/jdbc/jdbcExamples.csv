@@ -1,0 +1,49 @@
+###########################################################################
+# HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+# 
+# Copyright 2002 - 2018 Hitachi Vantara. All rights reserved.
+# 
+# NOTICE: All information including source code contained herein is, and
+# remains the sole property of Hitachi Vantara and its licensors. The intellectual
+# and technical concepts contained herein are proprietary and confidential
+# to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+# patents, or patents in process, and are protected by trade secret and
+# copyright laws. The receipt or possession of this source code and/or related
+# information does not convey or imply any rights to reproduce, disclose or
+# distribute its contents, or to manufacture, use, or sell anything that it
+# may describe, in whole or in part. Any reproduction, modification, distribution,
+# or public display of this information without the express written authorization
+# from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+# international treaties. Access to the source code contained herein is strictly
+# prohibited to anyone except those individuals and entities who have executed
+# confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+# explicitly covering such access.
+###########################################################################
+User,name,accessType,changed,attributes,usingConnectionPool,initialPoolSize,maximumPoolSize,connectionPoolingProperties,databaseType,hostname,databaseName,databasePort,username,password,quoteAllFields,forcingIdentifiersToLowerCase,forcingIdentifiersToUpperCase,connectSql,informixServername,SQLServerInstance,extraOptions,dataTablespace,streamingResults,partitioned,indexTablespace,usingDoubleDecimalAsSchemaTableSeparator,partitioningInformation 
+admin,TestDataSource1,NATIVE,TRUE,,,,,,,,,,,,,,,,,,,,,,,,
+suzy,TestDataSource2,NATIVE,TRUE,,,,,,,,,,,,,,,,,,,,,,,,
+admin,"!@#$%^&*()_-=+;:'""?<>,.`~[]{}|",NATIVE,TRUE,,,,,,,,,,,,,,,,,,,,,,,,
+suzy,TestDataSource3,NATIVE,TRUE,"{""CUSTOM_URL"":""testURL"",""CUSTOM_DRIVER_CLASS"":""testDriver""}",,,,,,,,,,,,,,,,,,,,,,,
+admin,TestDataSource4,NATIVE,TRUE,,TRUE,,,,,,,,,,,,,,,,,,,,,,
+suzy,TestDataSource5,NATIVE,TRUE,,TRUE,5,,,,,,,,,,,,,,,,,,,,,
+admin,TestDataSource6,NATIVE,TRUE,,TRUE,,10,,,,,,,,,,,,,,,,,,,,
+suzy,TestDataSource7,NATIVE,TRUE,,TRUE,8,15,,,,,,,,,,,,,,,,,,,,
+admin,TestDataSource9,NATIVE,TRUE,,TRUE,,,"{""defaultAutoCommit"":""false"",""defaultReadOnly"":""true"",""defaultTransactionIsolation"":""NONE"",""defaultCatalog"":""myCatalog"",""initialSize"":""2"",""maxActive"":""10"",""maxIdle"":""9"",""minIdle"":""1"",""maxWait"":""600"",""validationQuery"":""SELECT 1"",""testOnBorrow"":""false"",""testOnReturn"":""true"",""testWhileIdle"":""true"",""timeBetweenEvictionRunsMillis"":""1000"",""poolPreparedStatements"":""true"",""maxOpenPreparedStatements"":""15"",""accessToUnderlyingConnectionAllowed"":""true"",""removeAbandoned"":""true"",""removeAbandonedTimeout"":""900"",""logAbandoned"":""true""}",,,,,,,,,,,,,,,,,,,
+suzy,TestDataSource10,NATIVE,TRUE,,,,,,"{""name"":""Hypersonic"",""shortName"":""HYPERSONIC"",""defaultDatabasePort"":9001,""extraOptionsHelpUrl"":""http://hsqldb.sourceforge.net/doc/guide/ch04.html#N109DA"",""supportedAccessTypes"":[""NATIVE"",""ODBC"",""JNDI""]}",,,,,,,,,,,,,,,,,,
+suzy,TestDataSource11,NATIVE,TRUE,,,,,,"{""name"":""Hypersonic"",""shortName"":""HYPERSONIC"",""defaultDatabasePort"":9001,""extraOptionsHelpUrl"":""http://hsqldb.sourceforge.net/doc/guide/ch04.html#N109DA"",""supportedAccessTypes"":[""NATIVE"",""ODBC"",""JNDI""]}",localhost,dbName,,,,,,,,,,,,,,,,
+admin,TestDataSource12,NATIVE,TRUE,,,,,,"{""name"":""Hypersonic"",""shortName"":""HYPERSONIC"",""defaultDatabasePort"":9001,""extraOptionsHelpUrl"":""http://hsqldb.sourceforge.net/doc/guide/ch04.html#N109DA"",""supportedAccessTypes"":[""NATIVE"",""ODBC"",""JNDI""]}",localhost,dbName,1234,,,,,,,,,,,,,,,
+suzy,TestDataSource13,NATIVE,TRUE,,,,,,"{""name"":""Hypersonic"",""shortName"":""HYPERSONIC"",""defaultDatabasePort"":9001,""extraOptionsHelpUrl"":""http://hsqldb.sourceforge.net/doc/guide/ch04.html#N109DA"",""supportedAccessTypes"":[""NATIVE"",""ODBC"",""JNDI""]}",localhost,dbName,1234,testUser,,,,,,,,,,,,,,
+admin,TestDataSource14,NATIVE,TRUE,,,,,,"{""name"":""Hypersonic"",""shortName"":""HYPERSONIC"",""defaultDatabasePort"":9001,""extraOptionsHelpUrl"":""http://hsqldb.sourceforge.net/doc/guide/ch04.html#N109DA"",""supportedAccessTypes"":[""NATIVE"",""ODBC"",""JNDI""]}",localhost,dbName,1234,testUser,p@ssw0rd,,,,,,,,,,,,,
+suzy,TestDataSource15,NATIVE,TRUE,,,,,,,,,,,,TRUE,,,,,,,,,,,,
+admin,TestDataSource16,NATIVE,TRUE,,,,,,,,,,,,,TRUE,,,,,,,,,,,
+suzy,TestDataSource17,NATIVE,TRUE,,,,,,,,,,,,,,TRUE,,,,,,,,,,
+admin,TestDataSource18,NATIVE,TRUE,,,,,,,,,,,,,,,"""SELECT 1""",,,,,,,,,
+suzy,TestDataSource19,NATIVE,TRUE,,,,,,"{""name"":""Informix"",""shortName"":""INFORMIX"",""defaultDatabasePort"":9088,""extraOptionsHelpUrl"":""http://publib.boulder.ibm.com/infocenter/idshelp/v10/index.jsp?topic=/com.ibm.jdbc_pg.doc/jdbc212.htm"",""supportedAccessTypes"":[""NATIVE"",""ODBC"",""JNDI""]}",,,,,,,,,,informix,,,,,,,,
+admin,TestDataSource20,NATIVE,TRUE,"{""MSSQLUseIntegratedSecurity"":""true""}",,,,,"{""name"":""MS SQL Server (Native)"",""shortName"":""MSSQLNative"",""defaultDatabasePort"":1433,""extraOptionsHelpUrl"":""http://msdn.microsoft.com/en-us/library/ms378428.aspx"",""supportedAccessTypes"":[""NATIVE"",""ODBC"",""JNDI""]}",,,,,,,,,,,sqlinstance,,,,,,,
+suzy,TestDataSource21,NATIVE,TRUE,,,,,,,,,,,,,,,,,,"{GENERIC.option1:""value1"",GENERIC.option2:""15""}",,,,,,
+admin,TestDataSource22,NATIVE,TRUE,,,,,,,,,,,,,,,,,,,tablespace,,,,,
+suzy,TestDataSource23,NATIVE,TRUE,,,,,,,,,,,,,,,,,,,,results,,,,
+admin,TestDataSource24,NATIVE,TRUE,,,,,,,,,,,,,,,,,,,,,TRUE,,,
+suzy,TestDataSource25,NATIVE,TRUE,,,,,,,,,,,,,,,,,,,,,,1,,
+admin,TestDataSource26,NATIVE,TRUE,,,,,,,,,,,,,,,,,,,,,,,TRUE,
+suzy,TestDataSource27,NATIVE,TRUE,,,,,,,,,,,,,,,,,,,,,,,,info

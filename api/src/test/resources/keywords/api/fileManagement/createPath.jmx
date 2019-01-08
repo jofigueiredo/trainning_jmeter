@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
+  <hashTree>
+    <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
+    <hashTree>
+      <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Create Path" enabled="true">
+        <stringProp name="IfController.condition">${__groovy(
+          vars.get(&quot;setUpData&quot;) &amp;&amp; vars.get(&quot;path&quot;) != null &amp;&amp;
+          vars.get(&quot;path&quot;).length() &gt; 0 &amp;&amp;
+          vars.get(&quot;setUpData&quot;).toLowerCase().split(&quot;\,&quot;)*.trim().contains(&quot;path&quot;) &amp;&amp;
+          ![&quot;public&quot;\,&quot;home&quot;].contains(vars.get(&quot;path&quot;)) // dont override default directories
+		)}</stringProp>
+        <boolProp name="IfController.evaluateAll">false</boolProp>
+        <boolProp name="IfController.useExpression">true</boolProp>
+        <stringProp name="TestPlan.comments">
+          Given variables (setUpData, path)
+          When setUpData contains path
+          Then delete Path if exists
+          And create File if path contains &quot;.&quot; dot char
+          And create Directory if path dont contains &quot;.&quot; dot char
+</stringProp>
+      </IfController>
+      <hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Create Path" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <CriticalSectionController guiclass="CriticalSectionControllerGui" testclass="CriticalSectionController" testname="Create Path" enabled="true">
+            <stringProp name="CriticalSectionController.lockName">createDeletePath_lock</stringProp>
+          </CriticalSectionController>
+          <hashTree>
+            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="Delete Path" enabled="true">
+              <stringProp name="IncludeController.includepath">resources/keywords/api/fileManagement/deletePathPermanently.jmx</stringProp>
+            </IncludeController>
+            <hashTree/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Create Path" enabled="true"/>
+            <hashTree>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Create File IF path Contains (&quot;.xml&quot;,&quot;.xanalyzer&quot;,&quot;.xdash&quot;,&quot;.prpti&quot;)" enabled="true">
+                <stringProp name="IfController.condition">${__groovy(
+          vars.get(&quot;path&quot;) != null &amp;&amp;
+		vars.get(&quot;path&quot;).contains(&quot;.xml&quot;) ||
+		vars.get(&quot;path&quot;).contains(&quot;.xanalyzer&quot;) ||
+		vars.get(&quot;path&quot;).contains(&quot;.xdash&quot;) ||
+		vars.get(&quot;path&quot;).contains(&quot;.prpti&quot;)
+		)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="Create Files" enabled="true">
+                  <stringProp name="IncludeController.includepath">resources/keywords/api/fileManagement/createFiles.jmx</stringProp>
+                </IncludeController>
+                <hashTree/>
+              </hashTree>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Create Directory IF path Not Contains (&quot;.xml&quot;,&quot;.xanalyzer&quot;,&quot;.xdash&quot;,&quot;.prpti&quot;)" enabled="true">
+                <stringProp name="IfController.condition">${__groovy(
+		vars.get(&quot;path&quot;) != null &amp;&amp;
+		!vars.get(&quot;path&quot;).contains(&quot;.xml&quot;) &amp;&amp;
+		!vars.get(&quot;path&quot;).contains(&quot;.xanalyzer&quot;) &amp;&amp;
+		!vars.get(&quot;path&quot;).contains(&quot;.xdash&quot;) &amp;&amp;
+		!vars.get(&quot;path&quot;).contains(&quot;.prpti&quot;)
+		)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT createDir" enabled="true">
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                    <collectionProp name="Arguments.arguments"/>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">/pentaho/api/repo/files/${path}/createDir</stringProp>
+                  <stringProp name="HTTPSampler.method">PUT</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Verify StatusCode 2XX" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1519520460">2\d{2}</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">1</intProp>
+                    <stringProp name="Assertion.custom_message">The response code is not a 2xx code. Actual response code: ${__groovy(prev.getResponseCode())} </stringProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

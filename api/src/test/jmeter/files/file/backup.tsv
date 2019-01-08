@@ -1,0 +1,17 @@
+tc	user-agent	userRole	statusCode	responseBody            	#TC1               
+1.1	FireFox	admin	200	application/xml         	#TC1.1# GET Method 
+1.2	FireFox	admin	200	application/octet-stream	#TC1.2# GET Method 
+1.3	FireFox	suzy	403       	                        	#TC1.3# GET Method 
+1.4	FireFox	unknown	403       	                        	#TC1.4# GET Method 
+1.5	Chrome	admin   	200	application/xml         	#TC1.5# GET Method 
+1.6	Chrome	admin   	200	application/octet-stream	#TC1.6# GET Method 
+1.7	Chrome	suzy    	403       	                        	#TC1.7# GET Method 
+1.8	Chrome	unknown 	403       	                        	#TC1.8# GET Method 
+1.9	IE	admin   	200	application/xml         	#TC1.9# GET Method 
+1.10	IE	admin   	200	application/octet-stream	#TC1.10# GET Method
+1.11	IE	suzy    	403       	                        	#TC1.12# GET Method
+1.12	IE	unknown 	403       	                        	#TC1.13# GET Method
+1.13	Edge	admin	200	application/xml         	#TC1.14# GET Method
+1.14	Edge	admin	200	application/octet-stream	#TC1.15# GET Method
+1.15	Edge	suzy	403       	                        	#TC1.16# GET Method
+1.16	Edge	unknown	403       	                        	#TC1.17# GET Method

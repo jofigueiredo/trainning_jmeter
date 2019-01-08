@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
+  <hashTree>
+    <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
+    <hashTree>
+      <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Create Files" enabled="true"/>
+      <hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTPHeaderManager xml Type" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/xml</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Create .xml File" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(
+  vars.get(&quot;path&quot;)!=null &amp;&amp;
+  vars.get(&quot;path&quot;).toLowerCase().trim().contains(&quot;.xml&quot;)
+)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+          <stringProp name="TestPlan.comments">
+            Create file conform corresponding extension in variable &quot;path&quot;
+          </stringProp>
+        </IfController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT .xml File" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot;?&gt;&#xd;
+-&lt;index&gt;&#xd;
+  &lt;name&gt;%name&lt;/name&gt;&#xd;
+  &lt;description&gt;%description&lt;/description&gt;&#xd;
+  &lt;visible&gt;true&lt;/visible&gt;&#xd;
+  &lt;display-type&gt;icons&lt;/display-type&gt;&#xd;
+&lt;/index&gt;</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/pentaho/api/repo/files/${path}</stringProp>
+            <stringProp name="HTTPSampler.method">PUT</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Verify StatusCode 2XX" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">2\d{2}</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">1</intProp>
+              <stringProp name="Assertion.custom_message">The response code is not a 2xx code. Actual response code: ${__groovy(prev.getResponseCode())} </stringProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Create .xanalyzer File" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(
+  vars.get(&quot;path&quot;)!=null &amp;&amp;
+  vars.get(&quot;path&quot;).toLowerCase().trim().contains(&quot;.xanalyzer&quot;)
+)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+          <stringProp name="TestPlan.comments">Create File if variable &quot;path&quot; have the corresponding extension</stringProp>
+        </IfController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT .xanalyzer File" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;&#xd;
+&lt;reportRecord xmlns=&quot;http://www.pentaho.com&quot;&gt;&#xd;
+    &lt;commonStorageAttributes createdBy=&quot;admin&quot; updatedBy=&quot;admin&quot; created=&quot;2018-02-08T11:47:22.925-05:00&quot; update=&quot;2018-02-08T11:47:22.931-05:00&quot;&gt;&#xd;
+        &lt;path name=&quot;renameTest&quot; folder=&quot;/home/admin/renameTest/renameTest.xanalyzer&quot;/&gt;&#xd;
+    &lt;/commonStorageAttributes&gt;&#xd;
+    &lt;report catalog=&quot;SteelWheels&quot; cube=&quot;SteelWheelsSales&quot; reportTypeEnum=&quot;PIVOT&quot; showRowGrandTotal=&quot;false&quot; showColumnGrandTotal=&quot;false&quot; useNonVisualTotals=&quot;false&quot; showEmptyEnum=&quot;SHOW_MEASURE&quot; emptyCellDisplay=&quot;-&quot; showDrillLinks=&quot;false&quot; version=&quot;11&quot; autoRefresh=&quot;true&quot; freezeColumns=&quot;true&quot; freezeRows=&quot;true&quot;&gt;&#xd;
+        &lt;measures/&gt;&#xd;
+        &lt;columnAttributes/&gt;&#xd;
+        &lt;rowAttributes/&gt;&#xd;
+        &lt;filters/&gt;&#xd;
+        &lt;chartOptions vizApiVersion=&quot;2.0&quot; chartType=&quot;CUSTOM&quot; customChartType=&quot;pentaho/visual/models/bar&quot; legendPosition=&quot;RIGHT&quot; showLegend=&quot;true&quot; autoRange=&quot;true&quot; displayUnits=&quot;UNITS_0&quot; autoRangeSecondary=&quot;true&quot; displayUnitsSecondary=&quot;UNITS_0&quot; lineWidth=&quot;2&quot; lineShape=&quot;CIRCLE&quot; maxValues=&quot;100&quot; backgroundColor=&quot;#ffffff&quot; labelColor=&quot;#000000&quot; labelSize=&quot;12&quot; backgroundFill=&quot;NONE&quot; maxChartsPerRow=&quot;3&quot; backgroundColorEnd=&quot;#ffffff&quot; labelStyle=&quot;PLAIN&quot; legendBackgroundColor=&quot;#ffffff&quot; legendSize=&quot;12&quot; legendColor=&quot;#000000&quot; legendStyle=&quot;PLAIN&quot; labelFontFamily=&quot;Default&quot; legendFontFamily=&quot;Default&quot;/&gt;&#xd;
+        &lt;selectionFilters/&gt;&#xd;
+        &lt;selectionItems/&gt;&#xd;
+        &lt;pageSetup excelPageSize=&quot;LETTER&quot; pdfPageSize=&quot;LETTER&quot; excelOrientation=&quot;LANDSCAPE&quot; pdfOrientation=&quot;LANDSCAPE&quot; excelScalingType=&quot;PERCENT&quot; excelScalingPercent=&quot;100&quot; excelScalingPageWide=&quot;1&quot; excelScalingPageTall=&quot;1&quot; csvIncludeSubtotals=&quot;true&quot; csvFormatNumbers=&quot;true&quot;/&gt;&#xd;
+        &lt;drillColumns/&gt;&#xd;
+    &lt;/report&gt;&#xd;
+    &lt;uiAttributes showFieldList=&quot;true&quot; showFieldLayout=&quot;true&quot; showFilterPanel=&quot;false&quot; fieldListView=&quot;CMDVIEWCATEGORY&quot;&gt;&#xd;
+        &lt;rowFieldWidths/&gt;&#xd;
+        &lt;columnDataFieldWidths/&gt;&#xd;
+        &lt;pluginData&gt;[]&lt;/pluginData&gt;&#xd;
+    &lt;/uiAttributes&gt;&#xd;
+&lt;/reportRecord&gt;&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/pentaho/api/repo/files/${path}</stringProp>
+            <stringProp name="HTTPSampler.method">PUT</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Verify StatusCode 2XX" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">2\d{2}</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">1</intProp>
+              <stringProp name="Assertion.custom_message">The response code is not a 2xx code. Actual response code: ${__groovy(prev.getResponseCode())} </stringProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Create .xdash File" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(
+  vars.get(&quot;path&quot;)!=null &amp;&amp;
+  vars.get(&quot;path&quot;).toLowerCase().trim().contains(&quot;.xdash&quot;)
+)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+          <stringProp name="TestPlan.comments">Create File if variable &quot;path&quot; have the corresponding extension</stringProp>
+        </IfController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT .xdash File" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;dashboard&gt;&#xd;
+  &lt;title&gt;SuccessFailure&lt;/title&gt;&#xd;
+  &lt;heading&gt;New Dashboard&lt;/heading&gt;&#xd;
+  &lt;enableWidgetPrinting&gt;false&lt;/enableWidgetPrinting&gt;&#xd;
+  &lt;documentation&gt;&#xd;
+    &lt;author&gt;joe&lt;/author&gt;&#xd;
+    &lt;description/&gt;&#xd;
+    &lt;icon/&gt;&#xd;
+  &lt;/documentation&gt;&#xd;
+  &lt;template-ref&gt;xul/06-top-bot.xul&lt;/template-ref&gt;&#xd;
+  &lt;theme-ref&gt;00-Onyx&lt;/theme-ref&gt;&#xd;
+  &lt;layout&gt;&#xd;
+    &lt;overlay xmlns:pho=&quot;http://www.pentaho.com&quot;&gt;&#xd;
+      &lt;box id=&quot;Panel_1&quot; pho:title=&quot;Untitled 1&quot; type=&quot;titled-panel&quot; flex=&quot;1&quot; collapsed=&quot;false&quot;/&gt;&#xd;
+      &lt;box id=&quot;Panel_2&quot; pho:title=&quot;Untitled 2&quot; type=&quot;titled-panel&quot; flex=&quot;1&quot; collapsed=&quot;false&quot;/&gt;&#xd;
+      &lt;box id=&quot;Panel_3&quot; pho:title=&quot;Untitled 3&quot;/&gt;&#xd;
+      &lt;box id=&quot;Panel_4&quot; pho:title=&quot;Untitled 4&quot;/&gt;&#xd;
+      &lt;box id=&quot;Panel_5&quot; pho:title=&quot;Untitled 5&quot;/&gt;&#xd;
+      &lt;box id=&quot;Panel_6&quot; pho:title=&quot;Untitled 6&quot;/&gt;&#xd;
+      &lt;box id=&quot;Panel_7&quot; pho:title=&quot;Untitled 7&quot;/&gt;&#xd;
+      &lt;box id=&quot;Panel_8&quot; pho:title=&quot;Untitled 8&quot;/&gt;&#xd;
+      &lt;box id=&quot;Panel_9&quot; pho:title=&quot;Untitled 9&quot;/&gt;&#xd;
+      &lt;box id=&quot;Panel_10&quot; pho:title=&quot;Untitled 10&quot;/&gt;&#xd;
+      &lt;box id=&quot;titlebar&quot; title=&quot;&quot; height=&quot;23&quot; hidden=&quot;false&quot; width=&quot;0&quot; type=&quot;pagetitle&quot; collapsed=&quot;false&quot;/&gt;&lt;box id=&quot;widget-area&quot; type=&quot;scrollarea&quot;/&gt;&lt;box id=&quot;widget-area&quot; flex=&quot;1&quot;/&gt;&#xd;
+      &lt;box id=&quot;FilterPanel&quot; title=&quot;&quot; height=&quot;100&quot; hidden=&quot;false&quot; width=&quot;0&quot; type=&quot;povpanel&quot; collapsed=&quot;false&quot;&gt;&#xd;
+        &lt;hbox id=&quot;FilterPanel content&quot; height=&quot;0&quot; width=&quot;0&quot; type=&quot;&quot;&gt;&#xd;
+          &lt;vbox id=&quot;pov_widget_1_container&quot; height=&quot;0&quot; width=&quot;0&quot; label=&quot;[object Object]&quot; type=&quot;&quot;&gt;&lt;label id=&quot;pov_widget_1_label&quot; value=&quot;Start date&quot; hidden=&quot;false&quot;/&gt;&lt;box pho:type=&quot;pov&quot; id=&quot;pov_widget_1&quot;/&gt;&lt;/vbox&gt;&#xd;
+          &lt;vbox id=&quot;pov_widget_2_container&quot; height=&quot;0&quot; width=&quot;0&quot; label=&quot;[object Object]&quot; type=&quot;&quot;&gt;&lt;label id=&quot;pov_widget_2_label&quot; value=&quot;Period&quot; hidden=&quot;false&quot;/&gt;&lt;box pho:type=&quot;pov&quot; id=&quot;pov_widget_2&quot;/&gt;&lt;/vbox&gt;&#xd;
+        &lt;/hbox&gt;&#xd;
+      &lt;/box&gt;&lt;box id=&quot;hbox1&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox1&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox2&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox2&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;widget-area&quot; type=&quot;scrollarea&quot;/&gt;&lt;box id=&quot;widget-area&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox1&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox1&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox2&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox2&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;widget-area&quot; type=&quot;scrollarea&quot;/&gt;&lt;box id=&quot;widget-area&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;pov_widget_1&quot; title=&quot;&quot; height=&quot;0&quot; width=&quot;0&quot; type=&quot;pov&quot; collapsed=&quot;false&quot;/&gt;&lt;box id=&quot;hbox1&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox1&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox2&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox2&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;widget-area&quot; type=&quot;scrollarea&quot;/&gt;&lt;box id=&quot;widget-area&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;pov_widget_2&quot; title=&quot;&quot; height=&quot;0&quot; width=&quot;0&quot; type=&quot;pov&quot; collapsed=&quot;false&quot;/&gt;&lt;box id=&quot;hbox1&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox1&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox2&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox2&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;widget-area&quot; type=&quot;scrollarea&quot;/&gt;&lt;box id=&quot;widget-area&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox1&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox1&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox2&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox2&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;widget-area&quot; type=&quot;scrollarea&quot;/&gt;&lt;box id=&quot;widget-area&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox1&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox1&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox2&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox2&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;widget-area&quot; type=&quot;scrollarea&quot;/&gt;&lt;box id=&quot;widget-area&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox1&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox1&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox2&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox2&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;widget-area&quot; type=&quot;scrollarea&quot;/&gt;&lt;box id=&quot;widget-area&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox1&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox1&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox2&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox2&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;widget-area&quot; type=&quot;scrollarea&quot;/&gt;&lt;box id=&quot;widget-area&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox1&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox1&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox2&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox2&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;widget-area&quot; type=&quot;scrollarea&quot;/&gt;&lt;box id=&quot;widget-area&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox1&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox1&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox2&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox2&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;widget-area&quot; type=&quot;scrollarea&quot;/&gt;&lt;box id=&quot;widget-area&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox1&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox1&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox2&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox2&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;widget-area&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;widget-area&quot; type=&quot;scrollarea&quot;/&gt;&lt;box id=&quot;hbox1&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox1&quot; type=&quot;layout&quot;/&gt;&lt;box id=&quot;hbox2&quot; flex=&quot;1&quot;/&gt;&lt;box id=&quot;hbox2&quot; type=&quot;layout&quot;/&gt;&lt;/overlay&gt;&#xd;
+  &lt;/layout&gt;&#xd;
+  &lt;parameters&gt;&#xd;
+    &lt;parameter&gt;&#xd;
+      &lt;name&gt;Start date1342101273954&lt;/name&gt;&#xd;
+      &lt;defaultValue&gt;null&lt;/defaultValue&gt;&#xd;
+    &lt;/parameter&gt;&#xd;
+    &lt;parameter&gt;&#xd;
+      &lt;name&gt;Period1342101325496&lt;/name&gt;&#xd;
+      &lt;defaultValue/&gt;&#xd;
+    &lt;/parameter&gt;&#xd;
+    &lt;parameter&gt;&#xd;
+      &lt;name&gt;Start date1342101273954&lt;/name&gt;&#xd;
+      &lt;defaultValue&gt;null&lt;/defaultValue&gt;&#xd;
+    &lt;/parameter&gt;&#xd;
+    &lt;parameter&gt;&#xd;
+      &lt;name&gt;Start date1342101273954&lt;/name&gt;&#xd;
+      &lt;defaultValue&gt;null&lt;/defaultValue&gt;&#xd;
+    &lt;/parameter&gt;&#xd;
+  &lt;/parameters&gt;&#xd;
+&#xd;
+  &lt;widgetJavascript&gt;&#xd;
+    &lt;![CDATA[%5B%7B%22timerStart%22%3A%222017-01-10T18%3A03%3A47.439Z%22%2C%22refreshPeriod%22%3A0%2C%22timerSplit%22%3A%222017-01-10T18%3A03%3A47.449Z%22%2C%22type%22%3A%22PentahoPrptComponent%22%2C%22elapsedSinceSplit%22%3A4%2C%22autoSubmit%22%3Atrue%2C%22path%22%3A%22public%2Fpentaho-operations-mart%2Fdi_server%22%2C%22iconImgSrc%22%3A%22..%2F..%2F..%2F..%2F..%2Frepos%2Freporting%2Freportviewer%2Fimages%2FprptFileType.png%22%2C%22isDirty%22%3Afalse%2C%22solution%22%3A%22%22%2C%22options%22%3A%7B%22showParameters%22%3A%22false%22%7D%2C%22action%22%3A%22Successful_vs_Failed.prpt%22%2C%22paramExtraInfo%22%3A%5B%5D%2C%22iframe%22%3Atrue%2C%22outputParameters%22%3A%5B%5D%2C%22xactionPath%22%3A%22%2Fpublic%2Fpentaho-operations-mart%2Fdi_server%2FSuccessful_vs_Failed.prpt%22%2C%22localizedName%22%3A%22Successful_vs_Failed%22%2C%22visible%22%3Atrue%2C%22GUID%22%3A%2270455%22%2C%22elapsedSinceStart%22%3A10%2C%22staticParameters%22%3Atrue%2C%22priority%22%3A%22-1000%22%2C%22isManaged%22%3Atrue%2C%22executeAtStart%22%3Atrue%2C%22paramServiceUrl%22%3A%22%2Fpentaho%2Fapi%2Frepos%2F%253Apublic%253APentaho%2520Operations%2520Mart%253Adi_server%253ASuccessful_vs_Failed.prpt%2Fparameter%3Fframeless%3Dtrue%26showParameters%3Dfalse%26renderMode%3DPARAMETER%22%2C%22htmlObject%22%3A%22content-area-Panel_1%22%2C%22name%22%3A%22widget1%22%2C%22parameters%22%3A%5B%5B%22start_date%22%2C%22Start%20date1342101273954%22%2C%222014-06-13T00%3A00%3A00.000%2B0300%22%5D%2C%5B%22period_selection%22%2C%22Period1342101325496%22%2C%221%22%5D%2C%5B%22output-target%22%2C%22%22%2C%22table%2Fhtml%3Bpage-mode%3Dpage%22%5D%5D%2C%22initInstance%22%3A0%2C%22logColor%22%3A%22rgb(85%2C184%2C83)%22%2C%22listeners%22%3A%5B%22Start%20date1342101273954%22%2C%22Period1342101325496%22%5D%7D%2C%7B%22timerStart%22%3A%222017-01-10T18%3A03%3A47.447Z%22%2C%22refreshPeriod%22%3A0%2C%22timerSplit%22%3A%222017-01-10T18%3A03%3A47.466Z%22%2C%22type%22%3A%22PentahoPrptComponent%22%2C%22elapsedSinceSplit%22%3A2%2C%22autoSubmit%22%3Atrue%2C%22path%22%3A%22public%2Fpentaho-operations-mart%2Fdi_server%22%2C%22iconImgSrc%22%3A%22..%2F..%2F..%2F..%2F..%2Frepos%2Freporting%2Freportviewer%2Fimages%2FprptFileType.png%22%2C%22isDirty%22%3Afalse%2C%22solution%22%3A%22%22%2C%22options%22%3A%7B%22showParameters%22%3A%22false%22%7D%2C%22action%22%3A%22Success_vs_Failure_Rate.prpt%22%2C%22paramExtraInfo%22%3A%5B%5D%2C%22iframe%22%3Atrue%2C%22outputParameters%22%3A%5B%5D%2C%22xactionPath%22%3A%22%2Fpublic%2Fpentaho-operations-mart%2Fdi_server%2FSuccess_vs_Failure_Rate.prpt%22%2C%22localizedName%22%3A%22Success_vs_Failure_Rate%22%2C%22visible%22%3Atrue%2C%22GUID%22%3A%2225952%22%2C%22elapsedSinceStart%22%3A19%2C%22staticParameters%22%3Atrue%2C%22priority%22%3A%22-999%22%2C%22isManaged%22%3Atrue%2C%22executeAtStart%22%3Atrue%2C%22paramServiceUrl%22%3A%22%2Fpentaho%2Fapi%2Frepos%2F%253Apublic%253APentaho%2520Operations%2520Mart%253Adi_server%253ASuccess_vs_Failure_Rate.prpt%2Fparameter%3Fframeless%3Dtrue%26showParameters%3Dfalse%26renderMode%3DPARAMETER%22%2C%22htmlObject%22%3A%22content-area-Panel_2%22%2C%22name%22%3A%22widget2%22%2C%22parameters%22%3A%5B%5B%22start_date%22%2C%22Start%20date1342101273954%22%2C%222014-06-13T00%3A00%3A00.000%2B0300%22%5D%2C%5B%22period_selection%22%2C%22Period1342101325496%22%2C%221%22%5D%2C%5B%22output-target%22%2C%22%22%2C%22table%2Fhtml%3Bpage-mode%3Dpage%22%5D%5D%2C%22initInstance%22%3A0%2C%22logColor%22%3A%22rgb(84%2C184%2C82)%22%2C%22listeners%22%3A%5B%22Start%20date1342101273954%22%2C%22Period1342101325496%22%5D%7D%2C%7B%22type%22%3A%22dateInputComponent%22%2C%22name%22%3A%22pov_widget_1%22%2C%22parameter%22%3A%22Start%20date1342101273954%22%2C%22htmlObject%22%3A%22widgetContainer-content-pov_widget_1%22%2C%22valueAsId%22%3Afalse%2C%22executeAtStart%22%3Atrue%2C%22defaultIfEmpty%22%3Atrue%2C%22verticalOrientation%22%3Atrue%2C%22separator%22%3Anull%2C%22title%22%3A%22Start%20date%22%2C%22useFirstValue%22%3Afalse%2C%22dateFormat%22%3A%22yyyy-MM-dd%22%2C%22filterType%22%3A%22static%22%2C%22parameters%22%3A%5B%5D%2C%22valuesArray%22%3A%5B%5D%2C%22defaultValue%22%3A%22null%22%2C%22GUID%22%3A%2238939%22%7D%2C%7B%22timerStart%22%3A%222017-01-10T18%3A03%3A11.404Z%22%2C%22logColor%22%3A%22rgb(149%2C127%2C159)%22%2C%22defaultValue%22%3A%22null%22%2C%22refreshPeriod%22%3A0%2C%22timerSplit%22%3A%222017-01-10T18%3A03%3A11.460Z%22%2C%22type%22%3A%22multiButtonComponent%22%2C%22title%22%3A%22Period%22%2C%22elapsedSinceSplit%22%3A55%2C%22isRunning%22%3Afalse%2C%22useFirstValue%22%3Atrue%2C%22parameter%22%3A%22Period1342101325496%22%2C%22defaultIfEmpty%22%3Atrue%2C%22visible%22%3Atrue%2C%22GUID%22%3A%2257795%22%2C%22elapsedSinceStart%22%3A56%2C%22isMultiple%22%3Afalse%2C%22priority%22%3A%22-997%22%2C%22separator%22%3A%22null%22%2C%22valueAsId%22%3Afalse%2C%22cachedArray%22%3A%5B%5B%221%22%2C%2224%20hours%22%5D%2C%5B%227%22%2C%227%20days%22%5D%2C%5B%2230%22%2C%2230%20days%22%5D%5D%2C%22isManaged%22%3Afalse%2C%22initInstance%22%3A%220%22%2C%22executeAtStart%22%3Atrue%2C%22htmlObject%22%3A%22widgetContainer-content-pov_widget_2%22%2C%22valuesArray%22%3A%5B%5B%221%22%2C%2224%20hours%22%5D%2C%5B%227%22%2C%227%20days%22%5D%2C%5B%2230%22%2C%2230%20days%22%5D%5D%2C%22verticalOrientation%22%3Atrue%2C%22name%22%3A%22pov_widget_2%22%2C%22filterType%22%3A%22static%22%2C%22runCounter%22%3A%220%22%2C%22parameters%22%3A%5B%5D%7D%5D]]&gt;&#xd;
+  &lt;/widgetJavascript&gt;&#xd;
+  &lt;widgets&gt;&#xd;
+    &lt;widget jsonType=&quot;object&quot;&gt;&#xd;
+      &lt;timerStart jsonType=&quot;string&quot;&gt;2017-01-10T18:03:47.439Z&lt;/timerStart&gt;&#xd;
+      &lt;logColor jsonType=&quot;string&quot;&gt;rgb(85,184,83)&lt;/logColor&gt;&#xd;
+      &lt;refreshPeriod jsonType=&quot;string&quot;&gt;0&lt;/refreshPeriod&gt;&#xd;
+      &lt;timerSplit jsonType=&quot;string&quot;&gt;2017-01-10T18:03:47.449Z&lt;/timerSplit&gt;&#xd;
+      &lt;type jsonType=&quot;string&quot;&gt;PentahoPrptComponent&lt;/type&gt;&#xd;
+      &lt;elapsedSinceSplit jsonType=&quot;string&quot;&gt;4&lt;/elapsedSinceSplit&gt;&#xd;
+      &lt;autoSubmit jsonType=&quot;string&quot;&gt;true&lt;/autoSubmit&gt;&#xd;
+      &lt;path jsonType=&quot;string&quot;&gt;public/pentaho-operations-mart/di_server&lt;/path&gt;&#xd;
+      &lt;iconImgSrc jsonType=&quot;string&quot;&gt;../../../../../repos/reporting/reportviewer/images/prptFileType.png&lt;/iconImgSrc&gt;&#xd;
+      &lt;isDirty jsonType=&quot;string&quot;&gt;false&lt;/isDirty&gt;&lt;solution jsonType=&quot;string&quot;/&gt;&#xd;
+      &lt;options jsonType=&quot;object&quot;&gt;&#xd;
+        &lt;showParameters jsonType=&quot;string&quot;&gt;false&lt;/showParameters&gt;&#xd;
+      &lt;/options&gt;&#xd;
+      &lt;action jsonType=&quot;string&quot;&gt;Successful_vs_Failed.prpt&lt;/action&gt;&#xd;
+      &lt;iframe jsonType=&quot;string&quot;&gt;true&lt;/iframe&gt;&lt;outputParameters jsonType=&quot;object&quot;/&gt;&#xd;
+      &lt;xactionPath jsonType=&quot;string&quot;&gt;/public/pentaho-operations-mart/di_server/Successful_vs_Failed.prpt&lt;/xactionPath&gt;&#xd;
+      &lt;localizedName jsonType=&quot;string&quot;&gt;Successful_vs_Failed&lt;/localizedName&gt;&#xd;
+      &lt;visible jsonType=&quot;string&quot;&gt;true&lt;/visible&gt;&#xd;
+      &lt;listeners jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;Start date1342101273954&lt;/listeners&gt;&#xd;
+      &lt;listeners jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;Period1342101325496&lt;/listeners&gt;&#xd;
+      &lt;GUID jsonType=&quot;string&quot;&gt;70455&lt;/GUID&gt;&#xd;
+      &lt;elapsedSinceStart jsonType=&quot;string&quot;&gt;10&lt;/elapsedSinceStart&gt;&#xd;
+      &lt;staticParameters jsonType=&quot;string&quot;&gt;true&lt;/staticParameters&gt;&#xd;
+      &lt;priority jsonType=&quot;string&quot;&gt;-1000&lt;/priority&gt;&#xd;
+      &lt;isManaged jsonType=&quot;string&quot;&gt;true&lt;/isManaged&gt;&#xd;
+      &lt;executeAtStart jsonType=&quot;string&quot;&gt;true&lt;/executeAtStart&gt;&#xd;
+      &lt;initInstance jsonType=&quot;string&quot;&gt;0&lt;/initInstance&gt;&#xd;
+      &lt;paramServiceUrl jsonType=&quot;string&quot;&gt;/pentaho/api/repos/%3Apublic%3APentaho%20Operations%20Mart%3Adi_server%3ASuccessful_vs_Failed.prpt/parameter?frameless=true&amp;amp;showParameters=false&amp;amp;renderMode=PARAMETER&lt;/paramServiceUrl&gt;&#xd;
+      &lt;htmlObject jsonType=&quot;string&quot;&gt;content-area-Panel_1&lt;/htmlObject&gt;&#xd;
+      &lt;name jsonType=&quot;string&quot;&gt;widget1&lt;/name&gt;&#xd;
+      &lt;parameters jsonType=&quot;object&quot;&gt;&#xd;
+        &lt;parameter0 jsonType=&quot;object&quot;&gt;&#xd;
+          &lt;const jsonType=&quot;string&quot;&gt;2017-01-06&lt;/const&gt;&#xd;
+          &lt;var jsonType=&quot;string&quot;&gt;Start date1342101273954&lt;/var&gt;&#xd;
+          &lt;name jsonType=&quot;string&quot;&gt;start_date&lt;/name&gt;&#xd;
+        &lt;/parameter0&gt;&#xd;
+        &lt;parameter2 jsonType=&quot;object&quot;&gt;&#xd;
+          &lt;const jsonType=&quot;string&quot;&gt;table/html;page-mode=page&lt;/const&gt;&lt;var jsonType=&quot;string&quot;/&gt;&#xd;
+          &lt;name jsonType=&quot;string&quot;&gt;output-target&lt;/name&gt;&#xd;
+        &lt;/parameter2&gt;&#xd;
+        &lt;parameter1 jsonType=&quot;object&quot;&gt;&#xd;
+          &lt;const jsonType=&quot;string&quot;&gt;1&lt;/const&gt;&#xd;
+          &lt;var jsonType=&quot;string&quot;&gt;Period1342101325496&lt;/var&gt;&#xd;
+          &lt;name jsonType=&quot;string&quot;&gt;period_selection&lt;/name&gt;&#xd;
+        &lt;/parameter1&gt;&#xd;
+      &lt;/parameters&gt;&#xd;
+    &lt;/widget&gt;&#xd;
+    &lt;widget jsonType=&quot;object&quot;&gt;&#xd;
+      &lt;timerStart jsonType=&quot;string&quot;&gt;2017-01-10T18:03:47.447Z&lt;/timerStart&gt;&#xd;
+      &lt;logColor jsonType=&quot;string&quot;&gt;rgb(84,184,82)&lt;/logColor&gt;&#xd;
+      &lt;refreshPeriod jsonType=&quot;string&quot;&gt;0&lt;/refreshPeriod&gt;&#xd;
+      &lt;timerSplit jsonType=&quot;string&quot;&gt;2017-01-10T18:03:47.466Z&lt;/timerSplit&gt;&#xd;
+      &lt;type jsonType=&quot;string&quot;&gt;PentahoPrptComponent&lt;/type&gt;&#xd;
+      &lt;elapsedSinceSplit jsonType=&quot;string&quot;&gt;2&lt;/elapsedSinceSplit&gt;&#xd;
+      &lt;autoSubmit jsonType=&quot;string&quot;&gt;true&lt;/autoSubmit&gt;&#xd;
+      &lt;path jsonType=&quot;string&quot;&gt;public/pentaho-operations-mart/di_server&lt;/path&gt;&#xd;
+      &lt;iconImgSrc jsonType=&quot;string&quot;&gt;../../../../../repos/reporting/reportviewer/images/prptFileType.png&lt;/iconImgSrc&gt;&#xd;
+      &lt;isDirty jsonType=&quot;string&quot;&gt;false&lt;/isDirty&gt;&lt;solution jsonType=&quot;string&quot;/&gt;&#xd;
+      &lt;options jsonType=&quot;object&quot;&gt;&#xd;
+        &lt;showParameters jsonType=&quot;string&quot;&gt;false&lt;/showParameters&gt;&#xd;
+      &lt;/options&gt;&#xd;
+      &lt;action jsonType=&quot;string&quot;&gt;Success_vs_Failure_Rate.prpt&lt;/action&gt;&#xd;
+      &lt;iframe jsonType=&quot;string&quot;&gt;true&lt;/iframe&gt;&lt;outputParameters jsonType=&quot;object&quot;/&gt;&#xd;
+      &lt;xactionPath jsonType=&quot;string&quot;&gt;/public/pentaho-operations-mart/di_server/Success_vs_Failure_Rate.prpt&lt;/xactionPath&gt;&#xd;
+      &lt;localizedName jsonType=&quot;string&quot;&gt;Success_vs_Failure_Rate&lt;/localizedName&gt;&#xd;
+      &lt;visible jsonType=&quot;string&quot;&gt;true&lt;/visible&gt;&#xd;
+      &lt;listeners jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;Start date1342101273954&lt;/listeners&gt;&#xd;
+      &lt;listeners jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;Period1342101325496&lt;/listeners&gt;&#xd;
+      &lt;GUID jsonType=&quot;string&quot;&gt;25952&lt;/GUID&gt;&#xd;
+      &lt;elapsedSinceStart jsonType=&quot;string&quot;&gt;19&lt;/elapsedSinceStart&gt;&#xd;
+      &lt;staticParameters jsonType=&quot;string&quot;&gt;true&lt;/staticParameters&gt;&#xd;
+      &lt;priority jsonType=&quot;string&quot;&gt;-999&lt;/priority&gt;&#xd;
+      &lt;isManaged jsonType=&quot;string&quot;&gt;true&lt;/isManaged&gt;&#xd;
+      &lt;executeAtStart jsonType=&quot;string&quot;&gt;true&lt;/executeAtStart&gt;&#xd;
+      &lt;initInstance jsonType=&quot;string&quot;&gt;0&lt;/initInstance&gt;&#xd;
+      &lt;paramServiceUrl jsonType=&quot;string&quot;&gt;/pentaho/api/repos/%3Apublic%3APentaho%20Operations%20Mart%3Adi_server%3ASuccess_vs_Failure_Rate.prpt/parameter?frameless=true&amp;amp;showParameters=false&amp;amp;renderMode=PARAMETER&lt;/paramServiceUrl&gt;&#xd;
+      &lt;htmlObject jsonType=&quot;string&quot;&gt;content-area-Panel_2&lt;/htmlObject&gt;&#xd;
+      &lt;name jsonType=&quot;string&quot;&gt;widget2&lt;/name&gt;&#xd;
+      &lt;parameters jsonType=&quot;object&quot;&gt;&#xd;
+        &lt;parameter0 jsonType=&quot;object&quot;&gt;&#xd;
+          &lt;const jsonType=&quot;string&quot;&gt;2017-01-06&lt;/const&gt;&#xd;
+          &lt;var jsonType=&quot;string&quot;&gt;Start date1342101273954&lt;/var&gt;&#xd;
+          &lt;name jsonType=&quot;string&quot;&gt;start_date&lt;/name&gt;&#xd;
+        &lt;/parameter0&gt;&#xd;
+        &lt;parameter2 jsonType=&quot;object&quot;&gt;&#xd;
+          &lt;const jsonType=&quot;string&quot;&gt;table/html;page-mode=page&lt;/const&gt;&lt;var jsonType=&quot;string&quot;/&gt;&#xd;
+          &lt;name jsonType=&quot;string&quot;&gt;output-target&lt;/name&gt;&#xd;
+        &lt;/parameter2&gt;&#xd;
+        &lt;parameter1 jsonType=&quot;object&quot;&gt;&#xd;
+          &lt;const jsonType=&quot;string&quot;&gt;1&lt;/const&gt;&#xd;
+          &lt;var jsonType=&quot;string&quot;&gt;Period1342101325496&lt;/var&gt;&#xd;
+          &lt;name jsonType=&quot;string&quot;&gt;period_selection&lt;/name&gt;&#xd;
+        &lt;/parameter1&gt;&#xd;
+      &lt;/parameters&gt;&#xd;
+    &lt;/widget&gt;&#xd;
+    &lt;widget jsonType=&quot;object&quot;&gt;&#xd;
+      &lt;dateFormat jsonType=&quot;string&quot;&gt;yyyy-MM-dd&lt;/dateFormat&gt;&#xd;
+      &lt;defaultValue jsonType=&quot;string&quot;&gt;null&lt;/defaultValue&gt;&#xd;
+      &lt;GUID jsonType=&quot;string&quot;&gt;38939&lt;/GUID&gt;&#xd;
+      &lt;type jsonType=&quot;string&quot;&gt;dateInputComponent&lt;/type&gt;&#xd;
+      &lt;title jsonType=&quot;string&quot;&gt;Start date&lt;/title&gt;&#xd;
+      &lt;valueAsId jsonType=&quot;string&quot;&gt;false&lt;/valueAsId&gt;&lt;separator isNull=&quot;true&quot;/&gt;&#xd;
+      &lt;executeAtStart jsonType=&quot;string&quot;&gt;true&lt;/executeAtStart&gt;&#xd;
+      &lt;htmlObject jsonType=&quot;string&quot;&gt;widgetContainer-content-pov_widget_1&lt;/htmlObject&gt;&#xd;
+      &lt;verticalOrientation jsonType=&quot;string&quot;&gt;true&lt;/verticalOrientation&gt;&#xd;
+      &lt;useFirstValue jsonType=&quot;string&quot;&gt;false&lt;/useFirstValue&gt;&#xd;
+      &lt;parameter jsonType=&quot;string&quot;&gt;Start date1342101273954&lt;/parameter&gt;&#xd;
+      &lt;name jsonType=&quot;string&quot;&gt;pov_widget_1&lt;/name&gt;&#xd;
+      &lt;filterType jsonType=&quot;string&quot;&gt;static&lt;/filterType&gt;&lt;parameters jsonType=&quot;object&quot;/&gt;&#xd;
+      &lt;defaultIfEmpty jsonType=&quot;string&quot;&gt;true&lt;/defaultIfEmpty&gt;&#xd;
+    &lt;/widget&gt;&#xd;
+    &lt;widget jsonType=&quot;object&quot;&gt;&#xd;
+      &lt;timerStart jsonType=&quot;string&quot;&gt;2017-01-10T18:03:11.404Z&lt;/timerStart&gt;&#xd;
+      &lt;logColor jsonType=&quot;string&quot;&gt;rgb(149,127,159)&lt;/logColor&gt;&#xd;
+      &lt;defaultValue jsonType=&quot;string&quot;&gt;null&lt;/defaultValue&gt;&#xd;
+      &lt;refreshPeriod jsonType=&quot;string&quot;&gt;0&lt;/refreshPeriod&gt;&#xd;
+      &lt;timerSplit jsonType=&quot;string&quot;&gt;2017-01-10T18:03:11.460Z&lt;/timerSplit&gt;&#xd;
+      &lt;type jsonType=&quot;string&quot;&gt;multiButtonComponent&lt;/type&gt;&#xd;
+      &lt;title jsonType=&quot;string&quot;&gt;Period&lt;/title&gt;&#xd;
+      &lt;elapsedSinceSplit jsonType=&quot;string&quot;&gt;55&lt;/elapsedSinceSplit&gt;&#xd;
+      &lt;isRunning jsonType=&quot;string&quot;&gt;false&lt;/isRunning&gt;&#xd;
+      &lt;useFirstValue jsonType=&quot;string&quot;&gt;true&lt;/useFirstValue&gt;&#xd;
+      &lt;parameter jsonType=&quot;string&quot;&gt;Period1342101325496&lt;/parameter&gt;&#xd;
+      &lt;defaultIfEmpty jsonType=&quot;string&quot;&gt;true&lt;/defaultIfEmpty&gt;&#xd;
+      &lt;visible jsonType=&quot;string&quot;&gt;true&lt;/visible&gt;&#xd;
+      &lt;GUID jsonType=&quot;string&quot;&gt;57795&lt;/GUID&gt;&#xd;
+      &lt;elapsedSinceStart jsonType=&quot;string&quot;&gt;56&lt;/elapsedSinceStart&gt;&#xd;
+      &lt;isMultiple jsonType=&quot;string&quot;&gt;false&lt;/isMultiple&gt;&#xd;
+      &lt;priority jsonType=&quot;string&quot;&gt;-997&lt;/priority&gt;&#xd;
+      &lt;separator jsonType=&quot;string&quot;&gt;null&lt;/separator&gt;&#xd;
+      &lt;valueAsId jsonType=&quot;string&quot;&gt;false&lt;/valueAsId&gt;&#xd;
+      &lt;cachedArray jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;1&lt;/cachedArray&gt;&#xd;
+      &lt;cachedArray jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;24 hours&lt;/cachedArray&gt;&#xd;
+      &lt;cachedArray jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;7&lt;/cachedArray&gt;&#xd;
+      &lt;cachedArray jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;7 days&lt;/cachedArray&gt;&#xd;
+      &lt;cachedArray jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;30&lt;/cachedArray&gt;&#xd;
+      &lt;cachedArray jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;30 days&lt;/cachedArray&gt;&#xd;
+      &lt;isManaged jsonType=&quot;string&quot;&gt;false&lt;/isManaged&gt;&#xd;
+      &lt;initInstance jsonType=&quot;string&quot;&gt;0&lt;/initInstance&gt;&#xd;
+      &lt;executeAtStart jsonType=&quot;string&quot;&gt;true&lt;/executeAtStart&gt;&#xd;
+      &lt;htmlObject jsonType=&quot;string&quot;&gt;widgetContainer-content-pov_widget_2&lt;/htmlObject&gt;&#xd;
+      &lt;valuesArray jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;1&lt;/valuesArray&gt;&#xd;
+      &lt;valuesArray jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;24 hours&lt;/valuesArray&gt;&#xd;
+      &lt;valuesArray jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;7&lt;/valuesArray&gt;&#xd;
+      &lt;valuesArray jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;7 days&lt;/valuesArray&gt;&#xd;
+      &lt;valuesArray jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;30&lt;/valuesArray&gt;&#xd;
+      &lt;valuesArray jsonType=&quot;string&quot; jsonIsArray=&quot;true&quot;&gt;30 days&lt;/valuesArray&gt;&#xd;
+      &lt;verticalOrientation jsonType=&quot;string&quot;&gt;true&lt;/verticalOrientation&gt;&#xd;
+      &lt;name jsonType=&quot;string&quot;&gt;pov_widget_2&lt;/name&gt;&#xd;
+      &lt;filterType jsonType=&quot;string&quot;&gt;static&lt;/filterType&gt;&#xd;
+      &lt;runCounter jsonType=&quot;string&quot;&gt;0&lt;/runCounter&gt;&lt;parameters jsonType=&quot;object&quot;/&gt;&lt;/widget&gt;&#xd;
+  &lt;/widgets&gt;&#xd;
+&lt;/dashboard&gt;</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/pentaho/api/repo/files/${path}</stringProp>
+            <stringProp name="HTTPSampler.method">PUT</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Verify StatusCode 2XX" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">2\d{2}</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">1</intProp>
+              <stringProp name="Assertion.custom_message">The response code is not a 2xx code. Actual response code: ${__groovy(prev.getResponseCode())} </stringProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Create .prpti File" enabled="true">
+          <stringProp name="IfController.condition">${__groovy(
+  vars.get(&quot;path&quot;)!=null &amp;&amp;
+  vars.get(&quot;path&quot;).toLowerCase().trim().contains(&quot;.prpti&quot;)
+)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+          <stringProp name="TestPlan.comments">Create File if variable &quot;path&quot; have the corresponding extension</stringProp>
+        </IfController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT .prpt  File" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+  &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinSpecification&quot;,&#xd;
+  &quot;columnFooter&quot;: null,&#xd;
+  &quot;columnHeader&quot;: null,&#xd;
+  &quot;dataSources&quot;: [{&#xd;
+    &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinStaticDataSource&quot;,&#xd;
+    &quot;columnNames&quot;: [&quot;placeholder&quot;],&#xd;
+    &quot;name&quot;: &quot;default-empty&quot;,&#xd;
+    &quot;values&quot;: [&#xd;
+      [null],&#xd;
+      [null],&#xd;
+      [null],&#xd;
+      [null],&#xd;
+      [null],&#xd;
+      [null],&#xd;
+      [null],&#xd;
+      [null],&#xd;
+      [null],&#xd;
+      [null]&#xd;
+    ],&#xd;
+    &quot;query&quot;: &quot;undefined&quot;,&#xd;
+    &quot;domainId&quot;: &quot;undefined&quot;,&#xd;
+    &quot;xmi&quot;: &quot;undefined&quot;&#xd;
+  }, {&#xd;
+    &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinPmdDataSource&quot;,&#xd;
+    &quot;name&quot;: &quot;default&quot;,&#xd;
+    &quot;domainId&quot;: &quot;ba-pom.xmi&quot;,&#xd;
+    &quot;modelId&quot;: &quot;BV_MODEL_2&quot;,&#xd;
+    &quot;xmi&quot;: &quot;ba-pom.xmi&quot;,&#xd;
+    &quot;query&quot;: &quot;&lt;mql&gt;\n&lt;domain_type&gt;relational&lt;/domain_type&gt;\n&lt;domain_id&gt;&lt;![CDATA[ba-pom.xmi]]&gt;&lt;/domain_id&gt;\n&lt;model_id&gt;BV_MODEL_2&lt;/model_id&gt;\n&lt;options&gt;\n&lt;disable_distinct&gt;false&lt;/disable_distinct&gt;\n&lt;/options&gt;\n&lt;parameters&gt;\n&lt;/parameters&gt;\n&lt;selections&gt;\n&lt;/selections&gt;\n&lt;constraints&gt;\n&lt;/constraints&gt;\n&lt;orders&gt;\n&lt;/orders&gt;\n&lt;/mql&gt;\n&quot;,&#xd;
+    &quot;queryless&quot;: true&#xd;
+  }],&#xd;
+  &quot;designQueryLimit&quot;: 500,&#xd;
+  &quot;designQueryLimitEnabled&quot;: true,&#xd;
+  &quot;disableDistinct&quot;: false,&#xd;
+  &quot;fieldSorts&quot;: [],&#xd;
+  &quot;fields&quot;: [],&#xd;
+  &quot;filters&quot;: [],&#xd;
+  &quot;groupSorts&quot;: [],&#xd;
+  &quot;groups&quot;: [],&#xd;
+  &quot;hasSpec&quot;: false,&#xd;
+  &quot;marginBottom&quot;: 18,&#xd;
+  &quot;marginLeft&quot;: 18,&#xd;
+  &quot;marginRight&quot;: 18,&#xd;
+  &quot;marginTop&quot;: 40,&#xd;
+  &quot;messages&quot;: [],&#xd;
+  &quot;orientation&quot;: 1,&#xd;
+  &quot;pageFooters&quot;: [{&#xd;
+    &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinLabel&quot;,&#xd;
+    &quot;format&quot;: {&#xd;
+      &quot;backgroundColorStr&quot;: null,&#xd;
+      &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinFormat&quot;,&#xd;
+      &quot;fontBold&quot;: false,&#xd;
+      &quot;fontColorStr&quot;: &quot;#aaaaaa&quot;,&#xd;
+      &quot;fontItalic&quot;: false,&#xd;
+      &quot;fontName&quot;: &quot;Arial&quot;,&#xd;
+      &quot;fontSize&quot;: 9,&#xd;
+      &quot;fontStrikethrough&quot;: false,&#xd;
+      &quot;fontUnderline&quot;: false,&#xd;
+      &quot;horizontalAlignmentName&quot;: &quot;LEFT&quot;,&#xd;
+      &quot;verticalAlignmentName&quot;: &quot;baseline&quot;&#xd;
+    },&#xd;
+    &quot;value&quot;: &quot; &quot;&#xd;
+  }, {&#xd;
+    &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinLabel&quot;,&#xd;
+    &quot;format&quot;: {&#xd;
+      &quot;backgroundColorStr&quot;: null,&#xd;
+      &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinFormat&quot;,&#xd;
+      &quot;fontBold&quot;: false,&#xd;
+      &quot;fontColorStr&quot;: &quot;#aaaaaa&quot;,&#xd;
+      &quot;fontItalic&quot;: false,&#xd;
+      &quot;fontName&quot;: &quot;Arial&quot;,&#xd;
+      &quot;fontSize&quot;: 9,&#xd;
+      &quot;fontStrikethrough&quot;: false,&#xd;
+      &quot;fontUnderline&quot;: false,&#xd;
+      &quot;horizontalAlignmentName&quot;: &quot;RIGHT&quot;,&#xd;
+      &quot;verticalAlignmentName&quot;: &quot;baseline&quot;&#xd;
+    },&#xd;
+    &quot;value&quot;: &quot;$(PageofPages)&quot;&#xd;
+  }],&#xd;
+  &quot;pageFormat&quot;: &quot;LETTER&quot;,&#xd;
+  &quot;pageHeaders&quot;: [{&#xd;
+    &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinLabel&quot;,&#xd;
+    &quot;format&quot;: {&#xd;
+      &quot;backgroundColorStr&quot;: null,&#xd;
+      &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinFormat&quot;,&#xd;
+      &quot;fontBold&quot;: false,&#xd;
+      &quot;fontColorStr&quot;: &quot;#aaaaaa&quot;,&#xd;
+      &quot;fontItalic&quot;: false,&#xd;
+      &quot;fontName&quot;: &quot;Arial&quot;,&#xd;
+      &quot;fontSize&quot;: 9,&#xd;
+      &quot;fontStrikethrough&quot;: false,&#xd;
+      &quot;fontUnderline&quot;: false,&#xd;
+      &quot;horizontalAlignmentName&quot;: &quot;LEFT&quot;,&#xd;
+      &quot;verticalAlignmentName&quot;: &quot;baseline&quot;&#xd;
+    },&#xd;
+    &quot;value&quot;: &quot; &quot;&#xd;
+  }, {&#xd;
+    &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinLabel&quot;,&#xd;
+    &quot;format&quot;: {&#xd;
+      &quot;backgroundColorStr&quot;: null,&#xd;
+      &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinFormat&quot;,&#xd;
+      &quot;fontBold&quot;: false,&#xd;
+      &quot;fontColorStr&quot;: &quot;#aaaaaa&quot;,&#xd;
+      &quot;fontItalic&quot;: false,&#xd;
+      &quot;fontName&quot;: &quot;Arial&quot;,&#xd;
+      &quot;fontSize&quot;: 9,&#xd;
+      &quot;fontStrikethrough&quot;: false,&#xd;
+      &quot;fontUnderline&quot;: false,&#xd;
+      &quot;horizontalAlignmentName&quot;: &quot;RIGHT&quot;,&#xd;
+      &quot;verticalAlignmentName&quot;: &quot;baseline&quot;&#xd;
+    },&#xd;
+    &quot;value&quot;: &quot;$(report.date, date, MMMM dd, yyyy @ hh:mm )&quot;&#xd;
+  }],&#xd;
+  &quot;parameters&quot;: [],&#xd;
+  &quot;queryLimit&quot;: 0,&#xd;
+  &quot;queryTimeout&quot;: 0,&#xd;
+  &quot;reportFooters&quot;: [{&#xd;
+    &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinLabel&quot;,&#xd;
+    &quot;format&quot;: {&#xd;
+      &quot;backgroundColorStr&quot;: null,&#xd;
+      &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinFormat&quot;,&#xd;
+      &quot;fontBold&quot;: false,&#xd;
+      &quot;fontColorStr&quot;: &quot;#777777&quot;,&#xd;
+      &quot;fontItalic&quot;: false,&#xd;
+      &quot;fontName&quot;: &quot;Arial&quot;,&#xd;
+      &quot;fontSize&quot;: 12,&#xd;
+      &quot;fontStrikethrough&quot;: false,&#xd;
+      &quot;fontUnderline&quot;: false,&#xd;
+      &quot;horizontalAlignmentName&quot;: &quot;CENTER&quot;,&#xd;
+      &quot;verticalAlignmentName&quot;: &quot;baseline&quot;&#xd;
+    },&#xd;
+    &quot;value&quot;: &quot; &quot;&#xd;
+  }],&#xd;
+  &quot;reportTitle&quot;: &quot;Untitled&quot;,&#xd;
+  &quot;reportTitles&quot;: [{&#xd;
+    &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinLabel&quot;,&#xd;
+    &quot;format&quot;: {&#xd;
+      &quot;backgroundColorStr&quot;: null,&#xd;
+      &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinFormat&quot;,&#xd;
+      &quot;fontBold&quot;: false,&#xd;
+      &quot;fontColorStr&quot;: &quot;#3d6480&quot;,&#xd;
+      &quot;fontItalic&quot;: false,&#xd;
+      &quot;fontName&quot;: &quot;Arial&quot;,&#xd;
+      &quot;fontSize&quot;: 18,&#xd;
+      &quot;fontStrikethrough&quot;: false,&#xd;
+      &quot;fontUnderline&quot;: false,&#xd;
+      &quot;horizontalAlignmentName&quot;: &quot;LEFT&quot;,&#xd;
+      &quot;verticalAlignmentName&quot;: &quot;baseline&quot;&#xd;
+    },&#xd;
+    &quot;value&quot;: &quot;Untitled&quot;&#xd;
+  }, {&#xd;
+    &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinLabel&quot;,&#xd;
+    &quot;format&quot;: {&#xd;
+      &quot;backgroundColorStr&quot;: null,&#xd;
+      &quot;class&quot;: &quot;com.pentaho.iadhoc.model.ThinFormat&quot;,&#xd;
+      &quot;fontBold&quot;: false,&#xd;
+      &quot;fontColorStr&quot;: &quot;#3d6480&quot;,&#xd;
+      &quot;fontItalic&quot;: false,&#xd;
+      &quot;fontName&quot;: &quot;Arial&quot;,&#xd;
+      &quot;fontSize&quot;: 14,&#xd;
+      &quot;fontStrikethrough&quot;: false,&#xd;
+      &quot;fontUnderline&quot;: false,&#xd;
+      &quot;horizontalAlignmentName&quot;: &quot;LEFT&quot;,&#xd;
+      &quot;verticalAlignmentName&quot;: &quot;baseline&quot;&#xd;
+    },&#xd;
+    &quot;value&quot;: &quot; &quot;&#xd;
+  }],&#xd;
+  &quot;sourceReport&quot;: null,&#xd;
+  &quot;systemQueryLimit&quot;: 100000,&#xd;
+  &quot;templateName&quot;: &quot;0_crystal_1_left_aligned.prpt&quot;,&#xd;
+  &quot;version&quot;: 2&#xd;
+}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/pentaho/api/repo/files/${path}</stringProp>
+            <stringProp name="HTTPSampler.method">PUT</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTPHeaderManager json Type" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Verify StatusCode 2XX" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">2\d{2}</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">1</intProp>
+              <stringProp name="Assertion.custom_message">The response code is not a 2xx code. Actual response code: ${__groovy(prev.getResponseCode())} </stringProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

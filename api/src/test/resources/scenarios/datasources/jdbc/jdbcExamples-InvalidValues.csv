@@ -1,0 +1,41 @@
+﻿###########################################################################
+# HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+# 
+# Copyright 2002 - 2018 Hitachi Vantara. All rights reserved.
+# 
+# NOTICE: All information including source code contained herein is, and
+# remains the sole property of Hitachi Vantara and its licensors. The intellectual
+# and technical concepts contained herein are proprietary and confidential
+# to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+# patents, or patents in process, and are protected by trade secret and
+# copyright laws. The receipt or possession of this source code and/or related
+# information does not convey or imply any rights to reproduce, disclose or
+# distribute its contents, or to manufacture, use, or sell anything that it
+# may describe, in whole or in part. Any reproduction, modification, distribution,
+# or public display of this information without the express written authorization
+# from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+# international treaties. Access to the source code contained herein is strictly
+# prohibited to anyone except those individuals and entities who have executed
+# confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+# explicitly covering such access.
+###########################################################################
+User,name,accessType,changed,attributes,usingConnectionPool,initialPoolSize,maximumPoolSize,connectionPoolingProperties,databaseType,hostname,databaseName,databasePort,username,password,quoteAllFields,forcingIdentifiersToLowerCase,forcingIdentifiersToUpperCase,connectSql,informixServername,SQLServerInstance,extraOptions,dataTablespace,streamingResults,partitioned,indexTablespace,usingDoubleDecimalAsSchemaTableSeparator,partitioningInformation 
+admin,,NATIVE,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+suzy,TestDataSource2,,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+admin,/,NATIVE,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+suzy,\,NATIVE,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+suzy,TestDataSource3,NATIVE,FALSE,"{""invalidAttribute"":""testURL"",""CUSTOM_DRIVER_CLASS"":""testDriver""}",,,,,,,,,,,,,,,,,,,,,,,
+admin,TestDataSource4,NATIVE,FALSE,,10,,,,,,,,,,,,,,,,,,,,,,
+suzy,TestDataSource5,NATIVE,FALSE,,TRUE,TRUE,,,,,,,,,,,,,,,,,,,,,
+admin,TestDataSource6,NATIVE,FALSE,,TRUE,,FALSE,,,,,,,,,,,,,,,,,,,,
+admin,TestDataSource7,NATIVE,FALSE,,TRUE,,,"{""invalidProperty"":""false""}",,,,,,,,,,,,,,,,,,,
+suzy,TestDataSource8,NATIVE,FALSE,,,,,,"{""invalidType"":""Hypersonic""}",,,,,,,,,,,,,,,,,,
+admin,TestDataSource9,NATIVE,FALSE,,,,,,"{""name"":""Hypersonic"",""shortName"":""HYPERSONIC"",""defaultDatabasePort"":9001,""extraOptionsHelpUrl"":""http://hsqldb.sourceforge.net/doc/guide/ch04.html#N109DA"",""supportedAccessTypes"":[""NATIVE"",""ODBC"",""JNDI""]}",NoDatabaseName,,,,,,,,,,,,,,,,,
+admin,TestDataSource10,NATIVE,FALSE,,,,,,"{""name"":""Hypersonic"",""shortName"":""HYPERSONIC"",""defaultDatabasePort"":9001,""extraOptionsHelpUrl"":""http://hsqldb.sourceforge.net/doc/guide/ch04.html#N109DA"",""supportedAccessTypes"":[""NATIVE"",""ODBC"",""JNDI""]}",localhost,dbName,FALSE,,,,,,,,,,,,,,,
+suzy,TestDataSource11,NATIVE,FALSE,,,,,,,,,,,,12,,,,,,,,,,,,
+admin,TestDataSource12,NATIVE,FALSE,,,,,,,,,,,,,13,,,,,,,,,,,
+suzy,TestDataSource13,NATIVE,FALSE,,,,,,,,,,,,,,14,,,,,,,,,,
+suzy,TestDataSource14,NATIVE,FALSE,,,,,,,,,,,,,,,,,,"{""invalid"":""value1""}",,,,,,
+admin,TestDataSource15,NATIVE,FALSE,,,,,,,,,,,,,,,,,,,,,15,,,
+suzy,TestDataSource16,NATIVE,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,,
+admin,TestDataSource17,NATIVE,FALSE,,,,,,,,,,,,,,,,,,,,,,,16,

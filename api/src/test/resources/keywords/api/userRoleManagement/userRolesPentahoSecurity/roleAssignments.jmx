@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
+  <hashTree>
+    <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
+    <hashTree>
+      <IfController guiclass="IfControllerPanel" testclass="IfController" testname="roleAssignments" enabled="true">
+        <stringProp name="TestPlan.comments">       </stringProp>
+        <stringProp name="IfController.condition">${__groovy(
+		vars.get(&quot;role&quot;) &amp;&amp; vars.get(&quot;rolePermission&quot;) != null &amp;&amp; !vars.get(&quot;role&quot;).equalsIgnoreCase(&quot;Anonymous&quot;)
+          )}</stringProp>
+        <boolProp name="IfController.evaluateAll">false</boolProp>
+        <boolProp name="IfController.useExpression">true</boolProp>
+      </IfController>
+      <hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTPHeaderManager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Accept</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+          </collectionProp>
+          <stringProp name="TestPlan.comments">	Authorization Header,  should be inherited</stringProp>
+        </HeaderManager>
+        <hashTree/>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="roleAssignments" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Set Variable rolePermission " enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">if (vars.get(&quot;rolePermission&quot;).contains(&quot;org.pentaho.&quot;)) {
+    vars.put(&apos;rolePermission&apos;, Eval.me(vars.get(&quot;rolePermission&quot;)).collect {&apos;&quot;&apos; + it + &apos;&quot;&apos;}.sort().toString())
+    // sort list
+} else {
+    vars.put(&apos;rolePermission&apos;, rolePermissionMaped()) // check if variable already be formated
+}
+writeResponseMessage([&quot;rolePermission&quot;])
+// Methods _______________________________________________________________________________________________________________________________________________________________________
+
+def rolePermissionMaped() {
+    def rolePermission = vars.get(&apos;rolePermission&apos;).trim().toLowerCase()
+    def permissions = [
+            read                : &quot;org.pentaho.repository.read&quot;
+            , create            : &quot;org.pentaho.repository.create&quot;
+            , execute           : &quot;org.pentaho.repository.execute&quot;
+            , publish           : &quot;org.pentaho.security.publish&quot;
+            , scheduler         : &quot;org.pentaho.scheduler.manage&quot;
+            , datasource        : &quot;org.pentaho.platform.dataaccess.datasource.security.manage&quot;
+            , administersecurity: &quot;org.pentaho.security.administerSecurity&quot;]
+
+    if (rolePermission == &apos;all&apos;) {
+        rolePermission = permissions.collect {k, v -&gt; &apos;&quot;&apos; + &quot;$v&quot; + &apos;&quot;&apos;}.sort().toString()
+    } else {
+        rolePermission = rolePermission.tokenize(&quot;,&quot;).collect {&apos;&quot;&apos; + permissions.&quot;$it&quot; + &apos;&quot;&apos;}.sort().toString()
+    }
+    return rolePermission
+}
+
+def writeResponseMessage(List lst) {
+    def responseMessage = &quot;&quot;
+    lst.each {it -&gt; responseMessage += &quot;$it = &quot; + vars.get(&quot;$it&quot;).toString() + &quot;\n&quot;}
+    SampleResult.setResponseData(responseMessage, &quot;UTF-8&quot;)
+}</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET logicalRoleMap" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/pentaho/api/userroledao/logicalRoleMap</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">logicalRoles</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$..assignments[?(@.roleName==&apos;${role}&apos;) ].logicalRoles</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+              <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Set Variable logicalRoles " enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;logicalRoles&quot;, extractorStr(&quot;logicalRoles_ALL&quot;))
+
+// Methods _______________________________________________________________________________________________________________________________________________________________________
+
+def extractorStr(String name) {
+	def value = vars.get(name)
+	if (value != null &amp;&amp; value.contains(&quot;,&quot;)){
+		value = Eval.me(value).collect {&apos;&quot;&apos; + it + &apos;&quot;&apos;}.sort().toString()
+	}
+	else if (value != null ) {
+		value = &apos;[&quot;&apos; + value + &apos;&quot;]&apos;
+	}
+	return value
+}
+
+
+def extractorList(String name) {
+    List lst = []
+    def n = vars.get(name + &apos;_matchNr&apos;).toInteger()
+    if (n &gt; 0){
+	    for (i in 1..n) {
+	        lst.add(&apos;&quot;&apos;+ vars.get(name + &apos;_&apos; + i)+&apos;&quot;&apos;)
+	    }
+    }
+    return lst.sort().toString()
+}    </stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="true">
+            <stringProp name="IfController.condition">${__groovy(
+		vars.get(&quot;rolePermission&quot;)!=vars.get(&quot;logicalRoles&quot;)
+)}</stringProp>
+            <boolProp name="IfController.evaluateAll">false</boolProp>
+            <boolProp name="IfController.useExpression">true</boolProp>
+          </IfController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT roleAssignments" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&quot;assignments&quot;:[{&quot;roleName&quot;:&quot;${role}&quot;, &quot;logicalRoles&quot;:${rolePermission}}]}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/pentaho/api/userroledao/roleAssignments</stringProp>
+              <stringProp name="HTTPSampler.method">PUT</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Verify StatusCode 2XX" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1519520460">2\d{2}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message">The response code is not a 2xx code. Actual response code: ${__groovy(prev.getResponseCode())} </stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">1</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET logicalRoleMap" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/pentaho/api/userroledao/logicalRoleMap</stringProp>
+              <stringProp name="HTTPSampler.method">GET</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">logicalRoles</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">$..assignments[?(@.roleName==&apos;${role}&apos;) ].logicalRoles</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+              </JSONPostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">def rolePermission = vars.get(&quot;rolePermission&quot;)
+def logicalRoles = extractorStr(&quot;logicalRoles_ALL&quot;)
+def failureMessage = &quot;&quot;
+
+// Assert logicalRoleslst
+if ( rolePermission != logicalRoles ){
+	log.info(&quot;\n&quot;+rolePermission+&quot;\n&quot;+logicalRoles)
+	failureMessage += &quot;Expected permissions &quot; + rolePermission + &quot; but it got instead &quot; + logicalRoles + &quot;\n\n&quot;  }
+
+// Methods _______________________________________________________________________________________________________________________________________________________________________
+
+def extractorStr(String name) {
+	def value = vars.get(name)
+	if (value != null &amp;&amp; value.contains(&quot;,&quot;)){
+		value = Eval.me(value).collect {&apos;&quot;&apos; + it + &apos;&quot;&apos;}.sort().toString()
+	}
+	else if (value != null &amp;&amp; value.length() &gt; 0 ) {
+		value = &apos;[&quot;&apos; + value + &apos;&quot;]&apos;
+	} else {
+		value = &apos;[]&apos;
+	}
+	return value
+}
+
+def extractorList(String name) {
+    List lst = []
+    def n = vars.get(name + &apos;_matchNr&apos;).toInteger()
+    if (n &gt; 0){
+	    for (i in 1..n) {
+	        lst.add(&apos;&quot;&apos;+ vars.get(name + &apos;_&apos; + i)+&apos;&quot;&apos;)
+	    }
+    }
+    return lst.sort().toString()
+}
+
+// Trigger the Asseertion Error
+if (failureMessage?.trim()) {
+    failureMessage += &quot;URL: &quot; + SampleResult.getURL() + &quot;\n\n&quot;
+    failureMessage += &quot;REQUEST HEADERS: &quot; + SampleResult.getRequestHeaders() + &quot;\n\n&quot;
+    AssertionResult.setFailureMessage(failureMessage)
+    AssertionResult.setFailure(true)
+}
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
+  <hashTree>
+    <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
+    <hashTree>
+      <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Set Access Control List (ACL)" enabled="true">
+        <stringProp name="TestPlan.comments">variables[ setUpData, path, rolePathPermission(*1), userPathPermission(*1) notes: *1 = name1:permission1,permission2 | name2:permission1,permission2 ]
+
+conditions[ setUpData contains (&quot;setACL,path&quot;) and (rolePathPermission or userPathPermission) are not null ]
+
+Outputs[ set new ACL with related recipient (user/role) and permissions ]
+        </stringProp>
+        <stringProp name="IfController.condition">${__groovy(
+         vars.get(&quot;setUpData&quot;) &amp;&amp; vars.get(&quot;path&quot;) != null &amp;&amp;
+         vars.get(&quot;setUpData&quot;).toLowerCase().split(&quot;\,&quot;)*.trim().contains(&quot;setacl&quot;) &amp;&amp;
+         (vars.get(&quot;rolePathPermission&quot;) != null || vars.get(&quot;userPathPermission&quot;) != null)
+         )}</stringProp>
+        <boolProp name="IfController.evaluateAll">false</boolProp>
+        <boolProp name="IfController.useExpression">true</boolProp>
+      </IfController>
+      <hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Set Access Control List (ACL)" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET acl" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/pentaho/api/repo/files/${path}/acl</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT acl" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${putAcl}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/pentaho/api/repo/files/${path}/acl</stringProp>
+            <stringProp name="HTTPSampler.method">PUT</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTPHeaderManager \ xml" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Accept</stringProp>
+                  <stringProp name="Header.value">*/*</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/xml</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="set putAcl" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="script">import groovy.xml.XmlUtil
+
+def xmlRequestData = prev.getResponseDataAsString()
+def userPathPermission = vars.get(&quot;userPathPermission&quot;)
+def rolePathPermission = vars.get(&quot;rolePathPermission&quot;)
+
+if (userPathPermission.isEmpty() == false) {
+	xmlRequestData = setACL(xmlRequestData, userPathPermission, &quot;0&quot;)
+}
+if (rolePathPermission.isEmpty() == false) {
+	xmlRequestData = setACL(xmlRequestData, rolePathPermission, &quot;1&quot;)
+}
+
+vars.put(&apos;putAcl&apos;, XmlUtil.serialize(xmlRequestData))
+
+def setACL(def xmlData, String recipients, String type) {
+    def xmlParser = new XmlParser()
+
+    recipients.tokenize(&quot;|&quot;).each {
+        xmlData = xmlParser.parseText(XmlUtil.serialize(xmlData)) // Get it in correct format
+        def name = it.tokenize(&quot;:&quot;)[0].trim()
+        def permissions = permissionsToNumbers(it.tokenize(&quot;:&quot;)[1])
+        boolean isRecipientInACL = isRecipientInACL(xmlData, name, type)
+
+        if (isRecipientInACL == true &amp;&amp; permissions.isEmpty() == true) {
+            // delete role node
+            xmlData.&apos;**&apos;.find {aces -&gt; aces.recipient.text() == name}.replaceNode {}
+        } else if (isRecipientInACL == true &amp;&amp; permissions.isEmpty() == false) {
+            // update role node
+            xmlData.&apos;**&apos;.find {aces -&gt; aces.recipient.text() == name}.replaceNode(setNode(permissions, name, type))
+        } else if (permissions.isEmpty() == false) {
+            // insert new node
+            xmlData.children().add(1, setNode(permissions, name, type))
+        }
+    }
+    xmlData.entriesInheriting[0].value=&apos;false&apos;
+    return xmlData
+}
+
+def isRecipientInACL(Node xmlData, String name, String type) {
+    return xmlData.&apos;**&apos;.find {aces -&gt; aces.recipient.text() == name &amp;&amp; aces.recipientType.text() == type} != null
+}
+
+def setNode(List permissions, String name, String type) {
+    def node = new NodeBuilder().aces {
+        modifiable(&apos;true&apos;)
+        recipient(name)
+        recipientType(type)
+    }
+    permissions.each {node.appendNode(&apos;permissions&apos;, it)}
+    return node
+}
+
+def permissionsToNumbers(def pText) { // map permissions text to numbers
+    if (pText != null &amp;&amp; pText.trim().length() &gt; 0) {
+        def pList = pText.toLowerCase().tokenize(&apos;,&apos;)*.trim()
+
+        if ([&quot;read&quot;, &quot;write&quot;, &quot;delete&quot;, &quot;manage&quot;, &quot;all&quot;, &quot;&quot;].containsAll(pList)) {
+            def pMap = [read: &apos;0&apos;, write: &apos;1&apos;, delete: &apos;2&apos;, manage: &apos;3&apos;, all: &apos;4&apos;]
+            def pNumber = [&apos;&apos;]
+            pList.each {pNumber.add(pMap[it])}
+            return pNumber.unique().grep().sort() // remove null from list
+        } else {
+            log.error(&quot; Script Error: Invalid permissions :&quot; + pList.toString())
+            return &apos;&apos;
+        }
+    } else {
+        return &apos;&apos;
+    }
+}
+</stringProp>
+            </JSR223PreProcessor>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Verify StatusCode 2XX" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1519520460">2\d{2}</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">1</intProp>
+              <stringProp name="Assertion.custom_message">The response code is not a 2xx code. Actual response code: ${__groovy(prev.getResponseCode())} </stringProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
